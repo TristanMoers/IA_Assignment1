@@ -9,7 +9,12 @@ from search import *
 class Pathologic(Problem):
 
     def successor(self, state):
-        pass
+        actions = list()
+
+        # Si 
+
+        for a in actions:
+            yield a
 
 
 
@@ -18,10 +23,12 @@ class Pathologic(Problem):
 ###############
 
 class State:
-    def __init__(self, grid):
+    def __init__(self, grid, x, y):
         self.nbr = len(grid)
         self.nbc = len(grid[0])
         self.grid = grid
+        self.x = x
+        self.y = y
 
     def __str__(self):
         s = ""
@@ -51,7 +58,20 @@ def readInstanceFile(filename):
 #####################
 
 grid_init = readInstanceFile(sys.argv[1])
-init_state = State(grid_init)
+
+# ========== Search $ in grid ==========
+xb = 0
+yb = 0
+
+for x in range(0, len(grid_init)):
+    for y in range(0, len(grid_init[x])):
+        if grid_init[x][y] == '$':
+            xb = x
+            yb = y
+
+# ======================================
+
+init_state = State(grid_init, xb, yb)
 
 problem = Pathologic(init_state)
 
