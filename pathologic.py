@@ -17,44 +17,48 @@ class Pathologic(Problem):
 
         ########
         #UP
-        if(yb>0 and state.grid[yb-1][xb] != '1' and state.grid[yb-1][xb] != 'x'):
-            newgrid = [x[:] for x in state.grid]
-            newgrid[yb-1][xb] = '$'
-            newgrid[yb][xb] = 'x'
-            if state.grid[yb-1][xb] == '_':
-                actions.append(('up', State(newgrid, xb, yb-1, state.counter+1)))
-            else:
-                actions.append(('up', State(newgrid, xb, yb-1, state.counter)))
+        if(yb>0):
+            if(state.grid[yb-1][xb] != '1' and state.grid[yb-1][xb] != 'x'):
+                newgrid = [x[:] for x in state.grid]
+                newgrid[yb-1][xb] = '$'
+                newgrid[yb][xb] = 'x'
+                if state.grid[yb-1][xb] == '_':
+                    actions.append(('up', State(newgrid, xb, yb-1, state.counter+1)))
+                else:
+                    actions.append(('up', State(newgrid, xb, yb-1, state.counter)))
 
         #DOWN
-        if(yb<state.nbc-1 and state.grid[yb+1][xb] != '1' and state.grid[yb+1][xb] != 'x'):
-            newgrid = [x[:] for x in state.grid]
-            newgrid[yb+1][xb] = '$'
-            newgrid[yb][xb] = 'x'
-            if state.grid[yb+1][xb] == '_':
-                actions.append(('down', State(newgrid, xb, yb+1, state.counter+1)))
-            else:
-                actions.append(('down', State(newgrid, xb, yb+1, state.counter)))
+        if(yb<state.nbr-1):
+            if(state.grid[yb+1][xb] != '1' and state.grid[yb+1][xb] != 'x'):
+                newgrid = [x[:] for x in state.grid]
+                newgrid[yb+1][xb] = '$'
+                newgrid[yb][xb] = 'x'
+                if state.grid[yb+1][xb] == '_':
+                    actions.append(('down', State(newgrid, xb, yb+1, state.counter+1)))
+                else:
+                    actions.append(('down', State(newgrid, xb, yb+1, state.counter)))
 
         #LEFT
-        if(xb>0 and state.grid[yb][xb-1] != '1' and state.grid[yb][xb-1] != 'x'):
-            newgrid = [x[:] for x in state.grid]
-            newgrid[yb][xb-1] = '$'
-            newgrid[yb][xb] = 'x'
-            if state.grid[yb][xb-1] == '_':
-                actions.append(('left', State(newgrid, xb-1, yb, state.counter+1)))
-            else:
-                actions.append(('left', State(newgrid, xb-1, yb, state.counter)))
+        if(xb>0):
+            if(state.grid[yb][xb-1] != '1' and state.grid[yb][xb-1] != 'x'):
+                newgrid = [x[:] for x in state.grid]
+                newgrid[yb][xb-1] = '$'
+                newgrid[yb][xb] = 'x'
+                if state.grid[yb][xb-1] == '_':
+                    actions.append(('left', State(newgrid, xb-1, yb, state.counter+1)))
+                else:
+                    actions.append(('left', State(newgrid, xb-1, yb, state.counter)))
 
         #RIGHT
-        if(xb<state.nbr-1 and state.grid[yb][xb+1] != '1' and state.grid[yb][xb+1] != 'x'):
-            newgrid = [x[:] for x in state.grid]
-            newgrid[yb][xb+1] = '$'
-            newgrid[yb][xb] = 'x'
-            if state.grid[yb][xb+1] == '_':
-                actions.append(('right', State(newgrid, xb+1, yb, state.counter+1)))
-            else:
-                actions.append(('right', State(newgrid, xb+1, yb, state.counter)))
+        if(xb<state.nbc-1):
+            if(state.grid[yb][xb+1] != '1' and state.grid[yb][xb+1] != 'x'):
+                newgrid = [x[:] for x in state.grid]
+                newgrid[yb][xb+1] = '$'
+                newgrid[yb][xb] = 'x'
+                if state.grid[yb][xb+1] == '_':
+                    actions.append(('right', State(newgrid, xb+1, yb, state.counter+1)))
+                else:
+                    actions.append(('right', State(newgrid, xb+1, yb, state.counter)))
 
 
         for a in actions:
