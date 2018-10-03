@@ -14,6 +14,17 @@ class Pathologic(Problem):
         yb = state.y
 
         ########
+        #UP
+        if(yb>0 and grid[y-1] != 1)
+            
+        #DOWN
+        if(yb<state.nbc-1 and grid[yb+1] != 1)
+
+        #LEFT
+        if(xb>0 and grid[x-1] != 1)
+
+        #RIGHT
+        if(xb<state.nbr-1 and grid[xb+1] != 1)
 
         for a in actions:
             yield a
