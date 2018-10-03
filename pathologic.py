@@ -10,11 +10,17 @@ class Pathologic(Problem):
 
     def successor(self, state):
         actions = list()
+        xb = state.x
+        yb = state.y
 
-        # Si 
+        ########
 
         for a in actions:
             yield a
+
+
+    def goal_test(self, state):
+        return self.goal == state.counter
 
 
 
@@ -78,6 +84,7 @@ for x in range(0, len(grid_init)):
 init_state = State(grid_init, xb, yb, 0)
 
 problem = Pathologic(init_state)
+problem.goal = goal
 
 # example of bfs graph search
 node = breadth_first_graph_search(problem)
