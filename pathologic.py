@@ -1,5 +1,5 @@
 # -*-coding: utf-8 -*
-'''NAMES OF THE AUTHOR(S): Gaël Aglin <gael.aglin@uclouvain.be>, Francois Aubry <francois.aubry@uclouvain.be>'''
+'''NAMES OF THE AUTHOR(S): GaÃ«l Aglin <gael.aglin@uclouvain.be>, Francois Aubry <francois.aubry@uclouvain.be>'''
 from search import *
 import time
 
@@ -10,61 +10,68 @@ import time
 class Pathologic(Problem):
 
     def successor(self, state):
+        # We list all actions possibles for player (move up, down, left, right)
         actions = list()
-        xb = state.x
-        yb = state.y
-        #newgrid = [x[:] for x in state.grid]
+        xplayer = state.x
+        yplayer = state.y
+        
+        # Firstly we check if player is not on border of the grid to avoid array out exception
+        # Secondly we check if case (below, above, to left, to right) is not a wall
+        # It's mean that the case is walkable so we create a new grid with modified cases
+        # Next we add this move with a new state keeping new player position and new grid
+        # If at new position it was a circle the counter is incremented 
 
-        ########
         #UP
-        if(yb>0):
-            if(state.grid[yb-1][xb] != '1' and state.grid[yb-1][xb] != 'x'):
+        if yplayer > 0:
+            if state.grid[yplayer - 1][xplayer] != '1' and state.grid[yplayer - 1][xplayer] != 'x':
                 newgrid = [x[:] for x in state.grid]
-                newgrid[yb-1][xb] = '$'
-                newgrid[yb][xb] = 'x'
-                if state.grid[yb-1][xb] == '_':
-                    actions.append(('up', State(newgrid, xb, yb-1, state.counter+1)))
+                newgrid[yplayer - 1][xplayer] = '$'
+                newgrid[yplayer][xplayer] = 'x'
+                if state.grid[yplayer - 1][xplayer] == '_':
+                    actions.append(('up', State(newgrid, xplayer, yplayer - 1, state.counter + 1)))
                 else:
-                    actions.append(('up', State(newgrid, xb, yb-1, state.counter)))
-
-        #DOWN
-        if(yb<state.nbr-1):
-            if(state.grid[yb+1][xb] != '1' and state.grid[yb+1][xb] != 'x'):
-                newgrid = [x[:] for x in state.grid]
-                newgrid[yb+1][xb] = '$'
-                newgrid[yb][xb] = 'x'
-                if state.grid[yb+1][xb] == '_':
-                    actions.append(('down', State(newgrid, xb, yb+1, state.counter+1)))
-                else:
-                    actions.append(('down', State(newgrid, xb, yb+1, state.counter)))
+                    actions.append(('up', State(newgrid, xplayer, yplayer - 1, state.counter)))
 
         #LEFT
-        if(xb>0):
-            if(state.grid[yb][xb-1] != '1' and state.grid[yb][xb-1] != 'x'):
+        if xplayer > 0:
+            if state.grid[yplayer][xplayer - 1] != '1' and state.grid[yplayer][xplayer - 1] != 'x':
                 newgrid = [x[:] for x in state.grid]
-                newgrid[yb][xb-1] = '$'
-                newgrid[yb][xb] = 'x'
-                if state.grid[yb][xb-1] == '_':
-                    actions.append(('left', State(newgrid, xb-1, yb, state.counter+1)))
+                newgrid[yplayer][xplayer - 1] = '$'
+                newgrid[yplayer][xplayer] = 'x'
+                if state.grid[yplayer][xplayer - 1] == '_':
+                    actions.append(('left', State(newgrid, xplayer - 1, yplayer, state.counter + 1)))
                 else:
-                    actions.append(('left', State(newgrid, xb-1, yb, state.counter)))
+                    actions.append(('left', State(newgrid, xplayer - 1, yplayer, state.counter)))
+
+        #DOWN
+        if yplayer < state.nbr - 1:
+            if state.grid[yplayer + 1][xplayer] != '1' and state.grid[yplayer + 1][xplayer] != 'x':
+                newgrid = [x[:] for x in state.grid]
+                newgrid[yplayer + 1][xplayer] = '$'
+                newgrid[yplayer][xplayer] = 'x'
+                if state.grid[yplayer + 1][xplayer] == '_':
+                    actions.append(('down', State(newgrid, xplayer, yplayer + 1, state.counter + 1)))
+                else:
+                    actions.append(('down', State(newgrid, xplayer, yplayer + 1, state.counter)))
 
         #RIGHT
-        if(xb<state.nbc-1):
-            if(state.grid[yb][xb+1] != '1' and state.grid[yb][xb+1] != 'x'):
+        if xplayer < state.nbc - 1:
+            if(state.grid[yplayer][xplayer + 1] != '1' and state.grid[yplayer][xplayer + 1] != 'x'):
                 newgrid = [x[:] for x in state.grid]
-                newgrid[yb][xb+1] = '$'
-                newgrid[yb][xb] = 'x'
-                if state.grid[yb][xb+1] == '_':
-                    actions.append(('right', State(newgrid, xb+1, yb, state.counter+1)))
+                newgrid[yplayer][xplayer + 1] = '$'
+                newgrid[yplayer][xplayer] = 'x'
+                if state.grid[yplayer][xplayer + 1] == '_':
+                    actions.append(('right', State(newgrid, xplayer + 1, yplayer, state.counter + 1)))
                 else:
-                    actions.append(('right', State(newgrid, xb+1, yb, state.counter)))
+                    actions.append(('right', State(newgrid, xplayer + 1, yplayer, state.counter)))
 
 
         for a in actions:
             yield a
 
 
+    # The goal is when the number of circle equals the counter of actual state
+    # It's mean that all circle is taked
     def goal_test(self, state):
         return self.goal == state.counter
 
@@ -74,6 +81,8 @@ class Pathologic(Problem):
 # State class #
 ###############
 
+# State has position of player (x,y) and counter whish is incremented each time
+# When player take circle  
 class State:
     def __init__(self, grid, x, y, counter):
         self.nbr = len(grid)
@@ -112,29 +121,50 @@ def readInstanceFile(filename):
 
 grid_init = readInstanceFile(sys.argv[1])
 
-# ========== Search $ in grid ==========
-xb = 0
-yb = 0
+
+# ========== Search player position and goals in grid ==========
+
+# We keep position of player and count the number of circle in grid
+# To know the goal
+xplayer = 0
+yplayer = 0
 goal = 0
 
 for y in range(0, len(grid_init)):
     for x in range(0, len(grid_init[y])):
         if grid_init[y][x] == '$':
-            xb = x
-            yb = y
+            xplayer = x
+            yplayer = y
         if grid_init[y][x] == '_':
             goal = goal+1
 
-# ======================================
+# ============================================================
 
-init_state = State(grid_init, xb, yb, 0)
+
+init_state = State(grid_init, xplayer, yplayer, 0)
 
 problem = Pathologic(init_state)
 problem.goal = goal
 
 # example of bfs graph search
 start_time = time.time()
-node = breadth_first_graph_search(problem)
+
+
+# ================= Differents search =========================
+# DFSg
+node = depth_first_graph_search(problem)
+
+# BFSg
+#node = breadth_first_graph_search(problem)
+
+# DFSt
+#node = depth_first_tree_search(problem)
+
+# BFSt
+#node = breadth_first_tree_search(problem)
+
+# ==============================================================
+
 
 # example of print
 path = node.path()
@@ -148,4 +178,4 @@ for n in path:
     print(n.state)  # assuming that the __str__ function of state outputs the correct format
     print()
 
-print("Finished in %.2f seconds" % (end_time - start_time))
+#print("Finished in %.2f seconds" % (end_time - start_time))
